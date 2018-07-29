@@ -1,0 +1,16 @@
+<th:block layout:fragment="pearl-list">
+
+	<ul th:if="${not #lists.isEmpty(activityPointInfo.histories)}" class="pbody pearl-table">
+		<li th:each="item : ${activityPointInfo.histories}" class="point-item">
+			<div class="table_layout">
+				<div>
+					<p class="date" th:text="${#dates.format(item.pointHistOccurDt, 'yyyy.MM.dd')}">2018.01.24</p>
+					<p class="h_title" th:text="${#IntegUtil.codeMan(0, item.pointHistOccurTypeCode)}">SNS연동 진주알</p>
+				</div>
+				<div th:if="${#IntegUtil.isPearlType(item.pointHistTypeCode)}">( <em>+</em> ) <span th:text="${#IntegUtil.toCommaNumber(item.point)}">100</span></div>
+				<div th:unless="${#IntegUtil.isPearlType(item.pointHistTypeCode)}">( <em>-</em> ) <span th:text="${#IntegUtil.toCommaNumber(item.point)}">100</span></div>
+			</div>
+		</li>
+	</ul>
+	<button th:if="${activityPointInfo.totalCount != 0}" type="button" onclick="more()" class="btn_lg_more w100p">더보기 (<em th:text="${#IntegUtil.toCommaNumber(activityPointInfo.offset + activityPointInfo.totalCount)}">5</em>/<span th:text="${#IntegUtil.toCommaNumber(activityPointInfo.totalCount)}">35</span>)</button>
+</th:block>

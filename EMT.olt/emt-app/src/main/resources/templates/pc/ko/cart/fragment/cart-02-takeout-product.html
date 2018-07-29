@@ -1,0 +1,319 @@
+<dl th:if="${memberSn > 0}">
+	<dt class="on">
+		<span class="check_wrap">
+			<input type="checkbox" id="takeoutPrdCheck" name="takeoutPrdCheck" checked="checked">
+			<label for="takeoutPrdCheck">테이크아웃 상품 (<em id="takeoutPrdCnt">0</em>개)</label>
+		</span>
+		<button type="button"><span class="sr_only">닫기</span></button>
+	</dt>
+	<dd>
+		<div class="cont">
+			<!--/* 테이크아웃 매장 정보 */-->
+			<div class="takeout_info">
+				<dl>
+					<dt><b>테이크아웃</b>
+						<!--/* tooltip */-->
+						<span class="ui_tooltip">
+							<button type="button" class="btn_tooltip">툴팁보기</button>
+							<span class="arr"></span>
+							<span class="layer_tooltip">
+								<dl>
+									<dt class="title">테이크아웃</dt>
+									<dd>
+										<ul class="list_bullet_dot">
+											<li>테이크아웃 매장 운영시간: 오전 11시 ~ 오후 9시</li>
+											<li>테이크아웃 서비스는 온라인 주문 후 매장을 직접 방문하여 수령하는 서비스입니다.</li>
+											<li>미수령시 주문은 자동 취소됩니다. (결제완료 후 2일 후 자동취소)</li>
+											<li>테이크아웃 상품의 교환/반품은 수령매장에서만 가능합니다.</li>
+											<li>테이크아웃 주문은 매장에서 상품 준비가 완료되면 SMS를 발송하며 수신한 SMS 내 주문번호나 주문내역의 바코드를 수령매장에 제시하면 상품을 찾을 수 있습니다.</li>
+										</ul>
+									</dd>
+								</dl>
+								<button type="button" class="ui_close"><span class="sr_only">툴팁 닫기</span></button>
+							</span>
+						</span>
+					</dt>
+					<dd>
+						<div class="clear store_wrap" th:if="${selectStoreSn != null}">
+							<div th:text="${storeSelect.storeName}">강남점
+								<span id="storeSelect" th:switch="${storeSelect.invtEnoughType}">
+									<span th:case="'No'">[재고없음]</span>
+									<span th:case="'Enough'">[재고있음]</span>
+									<span th:case="'NNotEnougho'">[재고부족]</span>
+								</span>
+							</div>
+							<div>판매자 정보 확인
+								<div class="ui_tooltip">
+									<button type="button" class="btn_tooltip" id="b_openSeller">툴팁보기</button>
+									<span class="arr"></span>
+									<div class="layer_tooltip">
+										<dl>
+											<dt class="title">판매자 정보 확인</dt>
+											<dd>
+												<dl class="table_layout">
+													<dt class="w30p"><b>상호</b></dt>
+													<dd th:text="${storeSelect.storeTypeName}">로데오점</dd>
+												</dl>
+												<br>
+												<dl class="table_layout">
+													<dt class="w30p"><b>연락처</b></dt>
+													<dd th:text="${storeSelect.phoneNo2 != null ? #IntegUtil.telPhoneNumber(storeSelect.phoneNo2.phoneNo) : ''}">02-0000-0000</dd>
+												</dl>
+												<br>
+												<dl class="table_layout">
+													<dt class="w30p"><b>사업장 소재지</b></dt>
+													<dd th:text="${storeSelect.address != null ? storeSelect.address.address1 + storeSelect.address.address2 : ''}">서울 강남구 신사동 660-2, 101</dd>
+												</dl>
+												<br>
+												<dl class="table_layout" th:if="${storeSelect.brn != null or storeSelect.brn != ''}">
+													<dt class="w30p"><b>통신판매신고번호</b></dt>
+													<dd>
+														<a th:href="'http://www.ftc.go.kr/bizCommPop.do?wrkr_no=' + ${storeSelect.brn} + '&apv_perm_no='" title="새창" target="_blank" class="link">사업자정보 확인 &gt;</a>
+													</dd>
+												</dl>
+												<br>
+												<dl class="table_layout" th:if="${storeSelect.emailAddress != null or storeSelect.emailAddress != ''}">
+													<dt class="w30p"><b>e-mail</b></dt>
+													<dd><a th:href="'mailto:'+ ${storeSelect.emailAddress}"><span th:text="${storeSelect.emailAddress}">9702906ki@hanmail.net</span></a></dd>
+												</dl>
+											</dd>
+										</dl>
+										<button type="button" class="ui_close"><span class="sr_only">툴팁 닫기</span></button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<button class="btn_md_form" type="button" id="b_storeChange">매장변경</button>
+						<th:block ap:replace="~{cart/fragment/layer-cart-02}"/>
+					</dd>
+				</dl>
+
+				<dl th:if="${storeRegularList != null and #lists.size(storeRegularList) > 0}">
+					<dt><i class="ico"></i><b>단골매장</b></dt>
+					<dd>
+						<div class="favorite_store">
+							<button type="button" th:each="storeEx : ${storeRegularList}" th:onclick="|fnChangeStore('${storeEx.storeSn}')|">
+								<th:block th:text="${storeEx.storeName}">압구정점</th:block>
+								<th:block th:switch="${storeEx.invtEnoughType}">
+									<em th:case="'No'">[재고없음]</em>
+									<em th:case="'Enough'">[재고있음]</em>
+									<em th:case="'NNotEnougho'">[재고부족]</em>
+								</th:block>
+							</button>
+						</div>
+					</dd>
+				</dl>
+				<dl th:unless="${storeRegularList != null and #lists.size(storeRegularList) > 0}">
+					<dd>
+						<p class="text_notice">단골매장이 없습니다.</p>
+					</dd>
+				</dl>
+			</div>
+
+			<th:block th:each="storePickupOnlineProdEx, cartStorePickupOnlineProdExCnt : ${cartEx.cartStorePickupOnlineProdExList}">
+				<!--일반상품-->
+				<th:block th:if="${storePickupOnlineProdEx.prodTypeCode == 'Prod' && storePickupOnlineProdEx.singleProdYn == 'Y'}">
+					<th:block ap:replace="~{cart/fragment/takeoutProduct/takeout-01-prod-presale-spPrice-single-info :: prodType(prodTypecode = Prod)}"/>
+				</th:block>
+				<th:block th:if="${storePickupOnlineProdEx.prodTypeCode == 'Prod' && storePickupOnlineProdEx.singleProdYn == 'N'}">
+					<th:block ap:replace="~{cart/fragment/takeoutProduct/takeout-01-prod-presale-spPrice-group-info :: prodType(prodTypecode = Prod)}"/>
+				</th:block>
+
+				<!--예약상품-->
+				<th:block th:if="${storePickupOnlineProdEx.prodTypeCode == 'Presale' && storePickupOnlineProdEx.singleProdYn == 'Y'}">
+					<th:block ap:replace="~{cart/fragment/takeoutProduct/takeout-01-prod-presale-spPrice-single-info :: prodType(prodTypecode = Presale)}"/>
+				</th:block>
+				<th:block th:if="${storePickupOnlineProdEx.prodTypeCode == 'Presale' && storePickupOnlineProdEx.singleProdYn == 'N'}">
+					<th:block ap:replace="~{cart/fragment/takeoutProduct/takeout-01-prod-presale-spPrice-group-info :: prodType(prodTypecode = Presale)}"/>
+				</th:block>
+
+				<!--특가판매상품-->
+				<th:block th:if="${storePickupOnlineProdEx.prodTypeCode == 'SpPriceSale' && storePickupOnlineProdEx.singleProdYn == 'Y'}">
+					<th:block ap:replace="~{cart/fragment/takeoutProduct/takeout-01-prod-presale-spPrice-single-info :: prodType(prodTypecode = SpPriceSale)}"/>
+				</th:block>
+				<th:block th:if="${storePickupOnlineProdEx.prodTypeCode == 'SpPriceSale' && storePickupOnlineProdEx.singleProdYn == 'N'}">
+					<th:block ap:replace="~{cart/fragment/takeoutProduct/takeout-01-prod-presale-spPrice-group-info :: prodType(prodTypecode = SpPriceSale)}"/>
+				</th:block>
+
+				<!--특가증정상품-->
+				<th:block th:if="${storePickupOnlineProdEx.prodTypeCode == 'SpPriceAward' && storePickupOnlineProdEx.singleProdYn == 'Y'}">
+					<th:block ap:replace="~{cart/fragment/takeoutProduct/takeout-01-prod-presale-spPrice-single-info :: prodType(prodTypecode = SpPriceAward)}"/>
+				</th:block>
+				<th:block th:if="${storePickupOnlineProdEx.prodTypeCode == 'SpPriceAward' && storePickupOnlineProdEx.singleProdYn == 'N'}">
+					<th:block ap:replace="~{cart/fragment/takeoutProduct/takeout-01-prod-presale-spPrice-group-info :: prodType(prodTypecode = SpPriceAward)}"/>
+				</th:block>
+
+				<!--묶음고정상품-->
+				<th:block th:if="${storePickupOnlineProdEx.prodTypeCode == 'BulkFixedProd'}">
+					<th:block ap:replace="~{cart/fragment/takeoutProduct/takeout-02-bulk-info :: prodType(prodTypecode = BulkFixedProd)}"/>
+				</th:block>
+				<!--묶음선택상품-->
+				<th:block th:if="${storePickupOnlineProdEx.prodTypeCode == 'BulkSelectProd'}">
+					<th:block ap:replace="~{cart/fragment/takeoutProduct/takeout-02-bulk-info :: prodType(prodTypecode = BulkSelectProd)}"/>
+				</th:block>
+			</th:block>
+
+			<!--맴버쉽포인트 상품-->
+			<th:block th:each="storeMembershipPointOnlineProdEx, storeMembershipPointOnlineProdExCnt : ${cartEx.cartStorePickupMembershipPointExchOnlineProdExList}">
+				<th:block ap:replace="~{cart/fragment/takeoutProduct/takeout-03-membership-point-info}"/>
+			</th:block>
+
+			<!--활동포인트 상품-->
+			<th:block th:each="storeActivityPointOnlineProdEx, storeActivityPointOnlineProdExCnt : ${cartEx.cartStorePickupActivityPointExchOnlineProdExList}">
+				<th:block ap:replace="~{cart/fragment/takeoutProduct/takeout-03-activity-point-info}"/>
+			</th:block>
+
+			<div class="panel notice" th:if="${ #lists.size(cartEx.cartStorePickupOnlineProdExList) == 0 &&
+					  						    #lists.size(cartEx.cartStorePickupMembershipPointExchOnlineProdExList) == 0 &&
+					  						    #lists.size(cartEx.cartStorePickupActivityPointExchOnlineProdExList) == 0 }">
+				<i class="ico"></i>
+				<p class="text color_gray">현재 테이크아웃 장바구니가 비어있습니다.</p>
+			</div>
+			<!--/* 테이크아웃 장바구니 목록 */-->
+			<!--<div class="item_wrap">
+				<div class="item_info">
+					&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+					<div class="item_thumb">
+						<div class="check_wrap">
+							<input type="checkbox" id="takeout1">
+							<label for="takeout1">
+								<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+								<span class="sr_only">상품명</span>
+							</label>
+						</div>
+					</div>
+					<div class="item_name">
+						<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+						<span class="flag">뷰티포인트 전용</span>
+					</div>
+					&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+					<div class="count">
+						<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+							<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+							<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+							<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+						</div>
+					</div>
+					&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+					<div class="price">
+						<del><b>999,000</b>원</del>
+						<span class="strong"><b>12,000</b>원</span>
+					</div>
+					&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+					<div class="btns">
+						<button type="button" class="btn_sm_bordered emp">바로구매</button>
+						<button type="button" class="btn_sm_bordered">삭제</button>
+					</div>
+				</div>
+			</div>-->
+			<!--/* 묶음단일상품 타입 */-->
+			<!--<div class="item_wrap">
+				<div class="item_info">
+					&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+					<div class="item_thumb">
+						<div class="check_wrap">
+							<input type="checkbox" id="takeout10">
+							<label for="takeout10">
+								<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+							</label>
+						</div>
+					</div>
+					<div class="item_name">
+						<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++ 애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+					</div>
+					&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+					<div class="count">
+						<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+							<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+							<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+							<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+						</div>
+					</div>
+					&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+					<div class="price">
+						<del><b>999,000</b>원</del>
+						<span class="strong"><b>12,000</b>원</span>
+					</div>
+					&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+					<div class="btns">
+						<button type="button" class="btn_sm_bordered emp">바로구매</button>
+						<button type="button" class="btn_sm_bordered">삭제</button>
+					</div>
+				</div>
+				&lt;!&ndash;/* 옵션 : 수정, 삭제 불가능 */&ndash;&gt;
+				<ul class="item_option">
+					<li>
+						<div class="option_name">RD302 말린딸기시럽</div>
+						<div class="count">
+							<p class="text_center">1개</p>
+						</div>
+						<div class="option_price">
+							&lt;!&ndash;<em>[일시품절]</em>&ndash;&gt;
+							&lt;!&ndash;<button type="button" class="btn_sm_neutral">옵션변경</button>&ndash;&gt;
+						</div>
+						<div class="delete">
+							&lt;!&ndash;<button type="button" class="btn_delete"><span class="sr_only">옵션 삭제</span></button>&ndash;&gt;
+						</div>
+					</li>
+					<li>
+						<div class="option_name">RD302 말린딸기시럽</div>
+						<div class="count">
+							<p class="text_center">1개</p>
+						</div>
+						<div class="option_price">
+							&lt;!&ndash;<span>999,000원</span>&ndash;&gt;
+							&lt;!&ndash;<button type="button" class="btn_sm_neutral">옵션변경</button>&ndash;&gt;
+						</div>
+						<div class="delete">
+							&lt;!&ndash;<button type="button" class="btn_delete"><span class="sr_only">옵션 삭제</span></button>&ndash;&gt;
+						</div>
+					</li>
+				</ul>
+			</div>-->
+			<!--/* 사은품 제공 타입 */-->
+			<!--<div class="item_wrap">
+				<div class="item_info">
+					&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+					<div class="item_thumb">
+						<div class="check_wrap">
+							<input type="checkbox" id="takeout11">
+							<label for="takeout11">
+								<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+							</label>
+						</div>
+					</div>
+					<div class="item_name">
+						<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++ 애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+					</div>
+					&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+					<div class="count">
+						<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+							<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+							<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+							<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+						</div>
+					</div>
+					&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+					<div class="price">
+						<del><b>999,000</b>원</del>
+						<span class="strong"><b>12,000</b>원</span>
+					</div>
+					&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+					<div class="btns">
+						<button type="button" class="btn_sm_bordered emp">바로구매</button>
+						<button type="button" class="btn_sm_bordered">삭제</button>
+					</div>
+				</div>
+				&lt;!&ndash;/* 사은품 */&ndash;&gt;
+				<ul class="freebies">
+					<li>
+						<span class="option_name"><img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">사은품 : 컬러풀 드로잉 디어 마이 블루밍 립스톡 쉬폰</span><span class="term">기간 : 2018.04.01~2018.04.30</span>
+					</li>
+					<li>
+						<span class="option_name">사은품 : 컬러풀 드로잉 디어 마이 블루밍 립스톡 쉬폰</span><span class="term">기간 : 2018.04.01~2018.04.30</span>
+					</li>
+				</ul>
+			</div>-->
+		</div>
+	</dd>
+</dl>

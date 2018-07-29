@@ -1,0 +1,27 @@
+{{#each this.list}}
+<li class="ix-list-item item">
+	<a href="{{ productDetailPath this.onlineProdSn }}">
+		<div class="thumb">
+			<img class="lazy_load" src="" data-src="{{ absolutePath this.onlineProdImages.[0].imgUrl }}" alt="{{ this.onlineProdName }}">
+		</div>
+		<div class="item_info">
+			<div>
+				<p class="s_name">
+					<em class="tag">{{ this.linePromoDesc }}</em> {{{ this.lineDesc }}}
+				</p>
+				<p class="name">{{ this.onlineProdName }}</p>
+			</div>
+			<div class="price_area">
+				{{#with (calc this.onlineProdPriceSummary.maxOnlineSalePriceDiscountRate '+' this.onlineProdPriceSummary.maxMemberLevelDiscountRate '+' this.onlineProdPriceSummary.maxOnlineMemberDiscountRate) as |maxRate|}}
+					{{#xif maxRate '!=' 0}}
+					<span class="discount">
+						{{ maxRate }}<em>%</em>
+					</span>
+					{{/xif}}
+					<span class="price">{{ numberFormat ../onlineProdPriceSummary.minOnlineMemberDiscountPrice }}<em>원</em></span>
+				{{/with}}
+			</div>
+		</div>
+	</a>
+</li>
+{{/each}}

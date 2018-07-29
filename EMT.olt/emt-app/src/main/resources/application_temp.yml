@@ -1,0 +1,47 @@
+spring:
+  thymeleaf:
+    cache: false
+    mode: HTML
+   
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+
+  session:
+    store-type: none
+
+server:
+  port: 8080
+
+platform:
+  frontend:
+    mall-id: M02
+
+#편의점택배
+store:
+  url:
+    pc:
+      base-url: http://localhost:8080
+    mo:
+      base-url: http://m.localhost:8080
+
+ecp:
+  api:
+    base-url: https://56avor8q0k.execute-api.ap-northeast-2.amazonaws.com/sct
+    api-key: DEV
+
+amore:
+  api:
+    base-url: https://cit-prv-api-ddev.amorepacific.com/
+
+pos:
+  api:
+    base-url: https://epl-prv-api-ddev.amorepacific.com/
+
+bluewave:
+  fileupload:
+    location:
+      temp: C:\temp\upload\
+  imageresize:
+    imagemagick: false

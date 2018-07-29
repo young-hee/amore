@@ -1,0 +1,29 @@
+<div class="title table_layout">
+	<div><b class="font_lg">주문정보</b></div>
+</div>
+<div class="cont">
+	<dl class="table_layout">
+		<dt>주문 번호</dt>
+		<dd><strong class="num">{{ordEx.ordNo}}</strong></dd>
+	</dl>
+	<dl class="table_layout">
+		<dt>주문 일시</dt>
+
+		<dd><span class="num color_gray2">{{dateFormat ordEx.ordReceivedDt "YYYY-MM-DD HH:MM:SS"}}</span></dd>
+	</dl>
+	{{#xif onlineCnt ">" 0}}
+		<dl class="table_layout">
+			<dt>온라인 주문</dt>
+			<dd><em>{{ordStatusCheck type ordEx.ordDetailStatusCode}}</em></dd>
+		</dl>
+	{{/xif}}
+	{{#xif storeCnt ">" 0}}
+    	<dl class="table_layout">
+    		<dt>테이크 아웃</dt>
+    		<dd><em>주문접수</em></dd>
+    		<dd class="align_right">
+    			<button type="button" class="btn_take_out"><img src="@{/images/my/btn_barcode.gif}" alt="테이크아웃바코드 보기"></button>
+    		</dd>
+    	</dl>
+	{{/xif}}
+</div>

@@ -1,0 +1,176 @@
+<div class="total_money">
+	<div class="table_layout summary">
+		<dl>
+			<dt>총주문금액</dt>
+			<dd>
+				<span class="price">
+					<strong th:if="${cartEx.calculationResult.productOrderTotalAmountInfo != null}"
+							th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.productOrderTotalAmountInfo.standardCurrency.amount)}">0</strong>
+					<strong th:if="${cartEx.calculationResult.productOrderTotalAmountInfo == null}" th:text="0">0</strong>원
+				</span>
+			</dd>
+		</dl>
+		<dl class="plus">
+			<dt>배송비</dt>
+			<dd>
+				<span class="price">
+					<strong th:if="${cartEx.calculationResult.shipFeeSumInfo != null}"
+							th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.shipFeeSumInfo.standardCurrency.amount)}">2,500</strong>
+					<strong th:if="${cartEx.calculationResult.shipFeeSumInfo == null}" th:text="0">0</strong>원
+				</span>
+			</dd>
+		</dl>
+		<dl class="minus">
+			<dt>총 할인금액</dt><!--상품할인금액 총합 정보-->
+			<dd>
+				<span class="price">
+					<strong th:if="${cartEx.calculationResult.totalProdUnitDiscountAmountInfo != null}"
+							th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.totalProdUnitDiscountAmountInfo.standardCurrency.amount)}">0</strong>
+					<strong th:if="${cartEx.calculationResult.totalProdUnitDiscountAmountInfo == null}" th:text="0">0</strong>원
+				</span>
+			</dd>
+		</dl>
+		<dl class="plus" th:if="${memberSn > 0}">
+			<dt>예상 적립포인트</dt><!--적립 포인트(기본적립포인트 + 추가적립포인트)-->
+			<dd th:if="${cartEx.calculationResult.request.memberOrderYn == 'Y'}">
+				<span class="price">
+					<!--<strong th:text="${cartEx.calculationResult.totalMemberLevelSavingPoint} + ${cartEx.calculationResult.totalAdditionalSavingPoint}">0</strong>P-->
+					<th:block th:if="${#lists.size(cartEx.cartMemberEx.memberMembershipExList) > 0}" th:each="memberMembershipEx : ${cartEx.cartMemberEx.memberMembershipExList}">
+						<th:block th:with="resultMembershipMap=${cartEx.calculationResult.resultMembershipMap.get(#strings.concat(memberMembershipEx.membershipSn))}">
+							<strong th:text="${resultMembershipMap.totalMembershipSavingPoint} + ${resultMembershipMap.totalAdditionalMembershipSavingPoint}">0</strong>P
+						</th:block>
+					</th:block>
+				</span>
+			</dd>
+		</dl>
+		<dl class="equal">
+			<dt>결제 예정 금액</dt>
+			<dd>
+				<span class="price">
+					<strong th:if="${cartEx.calculationResult.paidAmountInfo != null}"
+							th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.paidAmountInfo.standardCurrency.amount)}">0</strong>
+					<strong th:if="${cartEx.calculationResult.paidAmountInfo == null}" th:text="0">0</strong>원
+				</span>
+			</dd>
+		</dl>
+		<span><button type="button" class="btn_details" onclick="$(this).toggleClass('on'); $('#details1').slideToggle();"><span class="sr_only">상세보가</span></button></span>
+	</div>
+	<!--/* 결제 금액 상세 내역 toggle 영역 */-->
+	<div class="details" id="details1">
+		<div>
+			<dl>
+				<dt><b>총 주문금액</b></dt>
+				<dd>
+					<span class="price">
+						<strong th:if="${cartEx.calculationResult.productOrderTotalAmountInfo != null}"
+								th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.productOrderTotalAmountInfo.standardCurrency.amount)}">0</strong>
+						<strong th:if="${cartEx.calculationResult.productOrderTotalAmountInfo == null}" th:text="0">0</strong><b>원</b>
+					</span>
+				</dd>
+				<dd>
+					<dl th:if="${cartEx.calculationResult.onlineShipProdSaleTotalAmountInfo.standardCurrency.amount > 0}">
+						<dt>온라인 상품(<em id="calOnlinePrdCnt">0</em>개)</dt>
+						<dd th:if="${cartEx.calculationResult.onlineShipProdSaleTotalAmountInfo != null}"
+							th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.onlineShipProdSaleTotalAmountInfo.standardCurrency.amount)}+'원'">0원
+						</dd>
+					</dl>
+					<dl th:if="${cartEx.calculationResult.storePickupProdSaleTotalAmountInfo.standardCurrency.amount > 0}">
+						<dt>테이크아웃 상품(<em id="calTakeoutPrdCnt">0</em>개)</dt>
+						<dd th:if="${cartEx.calculationResult.storePickupProdSaleTotalAmountInfo != null}"
+							th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.storePickupProdSaleTotalAmountInfo.standardCurrency.amount)}+'원'">0 원
+						</dd>
+					</dl>
+					<!--<dl th:if="${memberSn > 0}">
+						<dt>뷰티포인트 상품(<em>0</em>개)</dt>
+						<dd>0 원</dd>
+					</dl>-->
+				</dd>
+			</dl>
+			<dl>
+				<dt><b>배송비</b></dt>
+				<dd>
+					<span class="price">
+						<strong th:if="${cartEx.calculationResult.shipFeeSumInfo != null}"
+								th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.shipFeeSumInfo.standardCurrency.amount)}">0</strong>
+						<strong th:if="${cartEx.calculationResult.shipFeeSumInfo == null}" th:text="-0">0</strong><b>원</b>
+					</span>
+				</dd>
+			</dl>
+			<dl th:if="${cartEx.calculationResult.totalProdUnitDiscountAmountInfo != null or cartEx.calculationResult.exchIPointSum != null or cartEx.calculationResult.exchAPointSum != null}">
+				<dt><b>총 할인</b></dt>
+				<dd>
+					<span class="price">
+						<strong th:with="totalAmount=${cartEx.calculationResult.totalProdUnitDiscountAmountInfo.standardCurrency.amount + cartEx.calculationResult.exchIPointSum + cartEx.calculationResult.exchAPointSum}"
+								th:text="${#IntegUtil.toCommaNumber(totalAmount)}">0</strong><b>원</b>
+					</span>
+				</dd>
+				<dd>
+					<dl th:if="${cartEx.calculationResult.dsicountAmountInfoByOnlineProdDc != null and cartEx.calculationResult.dsicountAmountInfoByOnlineProdDc.standardCurrency.amount > 0}">
+						<dt>상품할인 적용</dt>
+						<dd th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.dsicountAmountInfoByOnlineProdDc.standardCurrency.amount)}">0 원</dd>
+					</dl>
+					<dl th:if="${cartEx.calculationResult.dsicountAmountInfoByOnlineMemberDc != null and cartEx.calculationResult.dsicountAmountInfoByOnlineMemberDc.standardCurrency.amount > 0}">
+						<dt>회원할인 적용</dt>
+						<dd th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.dsicountAmountInfoByOnlineMemberDc.standardCurrency.amount)}">0 원</dd>
+					</dl>
+					<dl th:if="${cartEx.calculationResult.dsicountAmountInfoByinstantCouponDc != null and cartEx.calculationResult.dsicountAmountInfoByinstantCouponDc.standardCurrency.amount > 0}">
+						<dt>즉시쿠폰 할인</dt>
+						<dd th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.dsicountAmountInfoByinstantCouponDc.standardCurrency.amount)}">0 원</dd>
+					</dl>
+					<dl th:if="${cartEx.calculationResult.discountAmountInfoByMNPromotion != null and cartEx.calculationResult.discountAmountInfoByMNPromotion.standardCurrency.amount > 0}">
+						<dt>2+1 행사 할인</dt>
+						<dd th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.discountAmountInfoByMNPromotion.standardCurrency.amount)}">0 원</dd>
+					</dl>
+					<dl th:if="${cartEx.calculationResult.exchIPointSum != null and cartEx.calculationResult.exchIPointSum > 0}">
+						<dt>뷰티포인트 교환사용</dt>
+						<dd th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.exchIPointSum)}">0P</dd>
+					</dl>
+					<dl th:if="${cartEx.calculationResult.exchAPointSum != null and cartEx.calculationResult.exchAPointSum > 0}">
+						<dt>쿠션포인트 교환사용</dt>
+						<dd th:text="${#IntegUtil.toCommaNumber(cartEx.calculationResult.exchAPointSum)}">0P</dd>
+					</dl>
+				</dd>
+			</dl>
+			<dl th:if="${memberSn > 0 and cartEx.calculationResult.request.memberOrderYn == 'Y'}">
+				<dt><b>예상적립 포인트</b></dt>
+				<dd>
+					<span class="price">
+						<th:block th:if="${#lists.size(cartEx.cartMemberEx.memberMembershipExList) > 0}" th:each="memberMembershipEx : ${cartEx.cartMemberEx.memberMembershipExList}">
+							<th:block th:with="resultMembershipMap=${cartEx.calculationResult.resultMembershipMap.get(#strings.concat(memberMembershipEx.membershipSn))}">
+								<strong th:text="${resultMembershipMap.totalMembershipSavingPoint} + ${resultMembershipMap.totalAdditionalMembershipSavingPoint}">0</strong>P
+							</th:block>
+						</th:block>
+					</span>
+				</dd>
+				<dd>
+					<dl th:each="memberMembershipEx : ${cartEx.cartMemberEx.memberMembershipExList}">
+						<dt>뷰티포인트 적립 <!--/* tooltip */-->
+							<span class="ui_tooltip">
+								<button type="button" class="btn_tooltip">툴팁보기</button>
+								<span class="arr"></span>
+								<span class="layer_tooltip">
+									<dl>
+										<dt class="title"  th:text="${memberMembershipEx.membershipName} + ' 적립 안내'">뷰티포인트 적립 안내</dt>
+										<dd>
+											<ul class="list_bullet_dot">
+												<li>아모레퍼시픽 뷰티포인트 통합회원은 에뛰드 회원등급에 관계없이 결제금액(할인 후)의 ‘기본 3% + 우대 최대 2%’가 추가 적립됩니다.</li>
+												<li>뷰티포인트 적립 기준금액은 [최종결제금액-뷰티포인트 적립 제외상품 금액-포장서비스-배송비]로 계산된 금액입니다.</li>
+												<li>일부 구매 상품 중 ‘뷰티포인트 적립 제외 상품’이 있을 경우, 뷰티 포인트가 적립되지 않습니다.</li>
+												<li>테이크아웃 주문은 더블 적립되며 뷰티포인트 적립 제외 상품 결제금액을 제외한 결제금액을 기준으로 적립됩니다.</li>
+												<li>할인 쿠폰과 중복 사용할 수 없습니다.</li>
+											</ul>
+										</dd>
+									</dl>
+									<button type="button" class="ui_close"><span class="sr_only">툴팁 닫기</span></button>
+								</span>
+							</span>
+						</dt>
+						<th:block th:with="resultMembershipMap=${cartEx.calculationResult.resultMembershipMap.get(#strings.concat(memberMembershipEx.membershipSn))}">
+							<dd th:text="${resultMembershipMap.totalMembershipSavingPoint} + ${resultMembershipMap.totalAdditionalMembershipSavingPoint} + 'P'">0P</dd>
+						</th:block>
+					</dl>
+				</dd>
+			</dl>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,126 @@
+{{#each this.list}}
+	{{#xif ../type '!==' 'returnExchange'}}
+		{{#if this.onlineOrdProdInfo}}
+			<tr>
+				<td rowspan="{{ condition (isEmpty this.storePickupOrdProdInfo) 1 2 }}">{{dateFormat ordReceivedDt "YYYY-MM-DD"}}</td>
+				<td rowspan="{{ condition (isEmpty this.storePickupOrdProdInfo) 1 2 }}">
+					<a href="/my/page/order/detail/{{this.ordNo}}" class="order_number_link">{{this.ordNo}}</a>
+					{{#if (ne ../type 'cashReceipts')}}
+						{{#if (eq this.onlineOrdProdInfo.ordHistProdStatusCode 'ShipComplete')}}
+							<button class="btn_sm_neutral" type="button" onclick="writeReview()">구매 리뷰 쓰기</button>
+						{{/if}}
+					{{/if}}
+				</td>
+				<td class="align_left">
+					<div class="flag">
+						<span>온라인 주문</span>
+					</div>
+					<a href="/my/page/order/detail/{{this.ordNo}}">
+						{{this.onlineOrdProdInfo.prodNameRlang}} {{checkCnt 'cnt' this.onlineOrdProdInfo.ordProdCnt}}
+					</a>
+				</td>
+				{{#if (eq ../type 'cashReceipts')}}
+					<td>가상계좌</td>
+				{{/if}}
+				<td>{{currencyFormat this.onlineOrdProdInfo.totalOrdAmt}}</td>
+				{{#xif ../type '===' 'cashReceipts'}}
+					<td class="status"><em>{{ordStatusCheck ../type this.onlineOrdProdInfo.ordHistProdStatusCode}}</em></td>
+					{{#xif this.cashReceiptIssueYn '==' 'Y'}}
+						<td>발급완료</td>
+					{{else}}
+						<td rowspan="{{ condition (isEmpty this.storePickupOrdProdInfo) 1 2 }}">
+							<button class="btn_sm_neutral" type="button" onclick="reqCashReceipts({{this.ordSn}}, {{json this}})"> 발급 신청</button>
+						</td>
+					{{/xif}}
+				{{else}}
+					<td class="status">
+						<p><em>{{ordStatusCheck ../type this.onlineOrdProdInfo.ordHistProdStatusCode}}</em></p>
+						{{#if (eq ../type 'online')}}
+							{{#if ('or' (eq this.onlineOrdProdInfo.ordHistProdStatusCode 'OrdReceivedWaiting') (eq this.onlineOrdProdInfo.ordHistProdStatusCode 'OrdReceivedComplete'))}}
+								{{#if (gt this.onlineOrdProdInfo.cancelQty 0)}}
+									<p>(부분취소)</p>
+								{{/if}}
+								<button class="btn_sm_form" type="button" onclick="javascript:location.href='/my/page/order/cancel/{{this.ordNo}}'">주문 취소</button>
+							{{/if}}
+						{{/if}}
+						{{#if (eq this.onlineOrdProdInfo.ordHistProdStatusCode 'Shipping')}}
+							<button class="btn_sm_bordered" type="button">배송조회</button>
+							<button class="btn_sm_primary" type="button">수령확인</button>
+						{{/if}}
+						{{#if (eq this.onlineOrdProdInfo.ordHistProdStatusCode 'ShipComplete')}}
+							<button class="btn_sm_form" type="button" onclick="javascript:location.href='/my/page/order/return/{{this.ordNo}}'">반품신청</button>
+							<button class="btn_sm_form" type="button" onclick="javascript:location.href='/my/page/order/exchange/{{this.ordNo}}'">교환신청</button>
+						{{/if}}
+					</td>
+				{{/xif}}
+			</tr>
+		{{/if}}
+		{{#if this.storePickupOrdProdInfo}}
+			<tr>
+				{{#if (isEmpty this.onlineOrdProdInfo)}}
+					<td>{{dateFormat ordReceivedDt "YYYY-MM-DD"}}</td>
+					<td>
+						<a href="/my/page/order/detail/{{this.ordNo}}" class="order_number_link">{{this.ordNo}}</a>
+						{{#if (eq this.storePickupOrdProdInfo.ordHistProdStatusCode 'ShipComplete')}}
+							<button class="btn_sm_neutral" type="button">구매 리뷰 쓰기</button>
+						{{/if}}
+					</td>
+				{{/if}}
+				<td class="align_left">
+					<div class="flag">
+						<span>테이크아웃</span>
+					</div>
+					<a href="/my/page/order/detail/{{this.ordNo}}">
+						{{this.storePickupOrdProdInfo.prodNameRlang}} {{checkCnt 'cnt' this.storePickupOrdProdInfo.ordProdCnt}}
+					</a>
+				</td>
+				{{#if (eq ../type 'cashReceipts')}}
+					<td>가상계좌</td>
+				{{/if}}
+				<td>{{currencyFormat this.storePickupOrdProdInfo.finalOnlineSaleAmtPcur}}</td>
+				{{#xif ../type '===' 'cashReceipts' '&&' (isEmpty this.onlineOrdProdInfo)}}
+					<td class="status"><em>{{ordStatusCheck ../type this.storePickupOrdProdInfo.ordHistProdStatusCode}}</em></td>
+					{{#xif this.cashReceiptIssueYn '==' 'Y'}}
+						<td>발급완료</td>
+					{{else}}
+						<td>
+							<button class="btn_sm_neutral" type="button"
+							onclick="reqCashReceipts({{this.ordSn}}, {{json this}})"> 발급 신청</button>
+						</td>
+					{{/xif}}
+				{{else}}
+					<td class="status">
+						<p><em>{{ordStatusCheck ../type this.storePickupOrdProdInfo.ordHistProdStatusCode}}</em></p>
+						{{#if (or (eq ../type "online")(eq ../type "store"))}}
+							{{#if ('or' (eq this.onlineOrdProdInfo.ordHistProdStatusCode 'OrdReceivedWaiting') (eq this.onlineOrdProdInfo.ordHistProdStatusCode 'OrdReceivedComplete'))}}
+								{{#if (gt this.onlineOrdProdInfo.cancelQty 0)}}
+									<p>(부분취소)</p>
+								{{/if}}
+								<button class="btn_sm_form" type="button" onclick="javascript:location.href='/my/page/order/cancel/{{this.ordNo}}'">주문 취소</button>
+							{{/if}}
+						{{/if}}
+					</td>
+				{{/xif}}
+			</tr>
+		{{/if}}
+	{{else}}
+		<tr>
+			<td>{{dateFormat ordReceivedDt "YYYY-MM-DD"}}</td>
+			<td>
+				<a href="/my/page/claim/{{condition (eq this.claimTypeCode 'Rtn') 'return' 'exchange'}}/{{this.ordHistNo}}" class="order_number_link">{{this.ordNo}}</a>
+			</td>
+			<td class="align_left">
+				<div class="flag">
+					<span>온라인 주문</span>
+				</div>
+				<a href="/my/page/claim/{{condition (eq this.claimTypeCode 'Rtn') 'return' 'exchange'}}/{{this.ordNo}}">
+					{{this.claimProdInfo.prodNameRlang}} {{checkCnt 'cnt' this.claimProdInfo.totalClaimQty}}
+				</a>
+			</td>
+			<td>{{currencyFormat this.claimProdInfo.finalOnlineSaleAmtPcur}}</td>
+			<td class="status">
+				<p><em>{{condition (eq this.claimTypeCode 'Exch') '교환' '반품'}}{{ordStatusCheck ../type this.claimProgressStatusCode}}</em></p>
+			</td>
+		</tr>
+	{{/xif}}
+{{/each}}

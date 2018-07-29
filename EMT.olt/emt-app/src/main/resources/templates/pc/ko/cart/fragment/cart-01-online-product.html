@@ -1,0 +1,840 @@
+<dl>
+	<dt class="on">
+		<span class="check_wrap">
+			<input type="checkbox" id="onlinePrdCheck" name="onlinePrdCheck" checked="checked">
+			<label for="onlinePrdCheck">온라인 쇼핑 상품 (<em id="onlinePrdCnt">0</em>개)</label>
+		</span>
+		<button type="button"><span class="sr_only">닫기</span></button>
+	</dt>
+	<dd>
+		<div class="cont">
+			<th:block th:each="deliveryOnlineProdEx, deliveryOnlineProdExCnt : ${cartEx.cartDeliveryOnlineProdExList}">
+				<!--일반상품-->
+				<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'Prod' && deliveryOnlineProdEx.singleProdYn == 'Y'}">
+					<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-single-info :: prodType(prodTypecode = Prod)}"/>
+				</th:block>
+				<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'Prod' && deliveryOnlineProdEx.singleProdYn == 'N'}">
+					<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-group-info :: prodType(prodTypecode = Prod)}"/>
+				</th:block>
+
+				<!--예약상품-->
+				<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'Presale' && deliveryOnlineProdEx.singleProdYn == 'Y'}">
+					<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-single-info :: prodType(prodTypecode = Presale)}"/>
+				</th:block>
+				<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'Presale' && deliveryOnlineProdEx.singleProdYn == 'N'}">
+					<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-group-info :: prodType(prodTypecode = Presale)}"/>
+				</th:block>
+
+				<!--특가판매상품-->
+				<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'SpPriceSale' && deliveryOnlineProdEx.singleProdYn == 'Y'}">
+					<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-single-info :: prodType(prodTypecode = SpPriceSale)}"/>
+				</th:block>
+				<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'SpPriceSale' && deliveryOnlineProdEx.singleProdYn == 'N'}">
+					<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-group-info :: prodType(prodTypecode = SpPriceSale)}"/>
+				</th:block>
+
+				<!--특가증정상품-->
+				<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'SpPriceAward' && deliveryOnlineProdEx.singleProdYn == 'Y'}">
+					<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-single-info :: prodType(prodTypecode = SpPriceAward)}"/>
+				</th:block>
+				<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'SpPriceAward' && deliveryOnlineProdEx.singleProdYn == 'N'}">
+					<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-group-info :: prodType(prodTypecode = SpPriceAward)}"/>
+				</th:block>
+
+				<!--묶음고정상품-->
+				<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'BulkFixedProd'}">
+					<th:block ap:replace="~{cart/fragment/onlineProduct/online-02-bulk-info :: prodType(prodTypecode = BulkFixedProd)}"/>
+				</th:block>
+				<!--묶음선택상품-->
+				<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'BulkSelectProd'}">
+					<th:block ap:replace="~{cart/fragment/onlineProduct/online-02-bulk-info :: prodType(prodTypecode = BulkSelectProd)}"/>
+				</th:block>
+
+			</th:block>
+
+			<!--맴버쉽포인트 상품-->
+			<th:block th:each="membershipPointOnlineProdEx, membershipPointOnlineProdExCnt : ${cartEx.cartDeliveryMembershipPointExchOnlineProdExList}">
+				<th:block ap:replace="~{cart/fragment/onlineProduct/online-03-membership-point-info}"/>
+			</th:block>
+
+			<!--활동포인트 상품-->
+			<th:block th:each="activityPointOnlineProdEx, activityPointOnlineProdExCnt : ${cartEx.cartDeliveryActivityPointExchOnlineProdExList}">
+				<th:block ap:replace="~{cart/fragment/onlineProduct/online-03-activity-point-info}"/>
+			</th:block>
+			<!--/* 단품타입 */-->
+			<!--<div class="item_wrap">
+				<div class="item_info">
+					&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+					<div class="item_thumb">
+						<div class="check_wrap">
+							<input type="checkbox" id="online1">
+							<label for="online1">
+								<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+								<span class="sr_only">상품명</span>
+							</label>
+						</div>
+					</div>
+					<div class="item_name">
+						<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+						<span class="flag">예약상품</span> <span class="flag">특가상품</span>
+					</div>
+					&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+					<div class="count">
+						<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+							<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+							<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+							<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+						</div>
+					</div>
+					&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+					<div class="price">
+						<del><b>999,000</b>원</del>
+						<span class="strong"><b>12,000</b>원</span>
+					</div>
+					&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+					<div class="btns">
+						<button type="button" class="btn_sm_bordered emp">바로구매</button>
+						<button type="button" class="btn_sm_bordered">삭제</button>
+					</div>
+				</div>
+			</div>-->
+			<!--/* 뷰티포인트 전용 */-->
+			<!--<div class="item_wrap">
+				<div class="item_info">
+					&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+					<div class="item_thumb">
+						<div class="check_wrap">
+							<input type="checkbox" id="online2">
+							<label for="online2">
+								<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+								<span class="sr_only">상품명</span>
+							</label>
+						</div>
+					</div>
+					<div class="item_name">
+						<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+						<span class="flag">뷰티포인트 전용</span>
+					</div>
+					&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+					<div class="count">
+						<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+							<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+							<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+							<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+						</div>
+					</div>
+					&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+					<div class="price">
+						<span><b>12,000</b>P</span> /
+						<span class="strong"><b>12,000</b>P</span>
+					</div>
+					&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+					<div class="btns">
+						<button type="button" class="btn_sm_bordered emp">바로구매</button>
+						<button type="button" class="btn_sm_bordered">삭제</button>
+					</div>
+				</div>
+			</div>-->
+			<!--/* 진주알 전용 */-->
+			<!--<div class="item_wrap">
+				<div class="item_info">
+					&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+					<div class="item_thumb">
+						<div class="check_wrap">
+							<input type="checkbox" id="online2_1">
+							<label for="online2_1">
+								<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+								<span class="sr_only">상품명</span>
+							</label>
+						</div>
+					</div>
+					<div class="item_name">
+						<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+						<span class="flag">진주알 전용</span>
+					</div>
+					&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+					<div class="count">
+						<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+							<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+							<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+							<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+						</div>
+					</div>
+					&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+					<div class="price">
+						<span><b>12,000</b>알</span> /
+						<span class="strong"><b>12,000</b>알</span>
+					</div>
+					&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+					<div class="btns">
+						<button type="button" class="btn_sm_bordered emp">바로구매</button>
+						<button type="button" class="btn_sm_bordered">삭제</button>
+					</div>
+				</div>
+			</div>-->
+			<!--/* 옵션타입/섬네일 없는 옵션/삭제가능 */-->
+			<!--<div class="item_wrap">
+				<div class="item_info">
+					&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+					<div class="item_thumb">
+						<div class="check_wrap">
+							<input type="checkbox" id="online3">
+							<label for="online3">
+								<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+							</label>
+						</div>
+					</div>
+					<div class="item_name">
+						<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+					</div>
+					&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+					<div class="count">
+						<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+							<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+							<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+							<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+						</div>
+					</div>
+					&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+					<div class="price">
+						<del><b>999,000</b>원</del>
+						<span class="strong"><b>12,000</b>원</span>
+					</div>
+					&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+					<div class="btns">
+						<button type="button" class="btn_sm_bordered emp">바로구매</button>
+						<button type="button" class="btn_sm_bordered">삭제</button>
+					</div>
+				</div>
+				&lt;!&ndash;/* 옵션 : 수정, 삭제 가능 */&ndash;&gt;
+				<ul class="item_option">
+					<li>
+						<div class="option_name">RD302 말린딸기시럽</div>
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						<div class="option_price">
+							<em>[일시품절]</em>
+							<button type="button" class="btn_sm_neutral">옵션변경</button>
+						</div>
+						<div class="delete">
+							<button type="button" class="btn_delete"><span class="sr_only">옵션 삭제</span></button>
+						</div>
+					</li>
+					<li>
+						<div class="option_name">RD302 말린딸기시럽</div>
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						<div class="option_price">
+							<span>999,000원</span>
+							<button type="button" class="btn_sm_neutral">옵션변경</button>
+						</div>
+						<div class="delete">
+							<button type="button" class="btn_delete"><span class="sr_only">옵션 삭제</span></button>
+						</div>
+					</li>
+				</ul>
+			</div>-->
+			<!--/* 옵션타입/섬네일 있는 옵션/삭제가능 */-->
+			<!--<div class="item_wrap">
+				<div class="item_info">
+					&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+					<div class="item_thumb">
+						<div class="check_wrap">
+							<input type="checkbox" id="online4">
+							<label for="online4">
+								<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+							</label>
+						</div>
+					</div>
+					<div class="item_name">
+						<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+					</div>
+					&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+					<div class="count">
+						<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+							<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+							<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+							<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+						</div>
+					</div>
+					&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+					<div class="price">
+						<del><b>999,000</b>원</del>
+						<span class="strong"><b>12,000</b>원</span>
+					</div>
+					&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+					<div class="btns">
+						<button type="button" class="btn_sm_bordered emp">바로구매</button>
+						<button type="button" class="btn_sm_bordered">삭제</button>
+					</div>
+				</div>
+				&lt;!&ndash;/* 옵션 : 수정, 삭제 가능 */&ndash;&gt;
+				<ul class="item_option">
+					<li>
+						<div class="option_name">
+							<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+							RD302 말린딸기시럽
+						</div>
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						<div class="option_price">
+							<em>[일시품절]</em>
+							<button type="button" class="btn_sm_neutral">옵션변경</button>
+						</div>
+						<div class="delete">
+							<button type="button" class="btn_delete"><span class="sr_only">옵션 삭제</span></button>
+						</div>
+					</li>
+					<li>
+						<div class="option_name">
+							<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+							RD302 말린딸기시럽
+						</div>
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						<div class="option_price">
+							<span>999,000원</span>
+							<button type="button" class="btn_sm_neutral">옵션변경</button>
+						</div>
+						<div class="delete">
+							<button type="button" class="btn_delete"><span class="sr_only">옵션 삭제</span></button>
+						</div>
+					</li>
+				</ul>
+			</div>-->
+			<!--/* 1+1 단품 프로모션 */-->
+			<!--<div class="promotion">
+				<div class="clear promotion_header">
+					<a href="#none"><strong>[EVENT] 섀도우 week 싱글 섀도우 1+1</strong></a> &lt;!&ndash;/* 이벤트명 */&ndash;&gt;
+					&lt;!&ndash;/* 혜택 상태 */&ndash;&gt;
+					<span class="benefit"><em>1+1 혜택 적용</em></span>
+				</div>
+				<div class="item_wrap">
+					<div class="item_info">
+						&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+						<div class="item_thumb">
+							<div class="check_wrap">
+								<input type="checkbox" id="takeout2">
+								<label for="takeout2">
+									<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+									<span class="sr_only">상품명</span>
+								</label>
+							</div>
+						</div>
+						<div class="item_name">
+							<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+							<span class="flag">1+1</span>
+						</div>
+						&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+						<div class="price">
+							<del><b>999,000</b>원</del>
+							<span class="strong"><b>12,000</b>원</span>
+						</div>
+						&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+						<div class="btns">
+							<button type="button" class="btn_sm_bordered emp">바로구매</button>
+							<button type="button" class="btn_sm_bordered">삭제</button>
+						</div>
+					</div>
+				</div>
+				<p class="text_notice">1개 담으면 1개 증정</p>
+			</div>-->
+			<!--/* 1+1 복합 프로모션 A+B */-->
+			<!--<div class="promotion">
+				<div class="clear promotion_header">
+					<a href="#none"><strong>1+1 이벤트 명</strong></a>
+					&lt;!&ndash;/* 가격이 들어갈 경우 */&ndash;&gt;
+					<div class="price">
+						<del><b>999,000</b>원</del>
+						<span class="strong"><b>12,000</b>원</span>
+					</div>
+					<span class="benefit">1+1 혜택 미적용</span>
+				</div>
+				<div class="item_wrap">
+					<div class="item_info">
+						&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+						<div class="item_thumb">
+							<div class="check_wrap">
+								<input type="checkbox" id="takeout3">
+								<label for="takeout3">
+									<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+									<span class="sr_only">상품명</span>
+								</label>
+							</div>
+						</div>
+						<div class="item_name">
+							<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+							<span class="flag">1+1</span>
+						</div>
+						&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+						<div class="price">
+							<del><b>999,000</b>원</del>
+							<span class="strong"><b>12,000</b>원</span>
+						</div>
+						&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+						<div class="btns">
+							<button type="button" class="btn_sm_bordered emp">바로구매</button>
+							<button type="button" class="btn_sm_bordered">삭제</button>
+						</div>
+					</div>
+				</div>
+				<div class="item_wrap plus">
+					<div class="item_info">
+						&lt;!&ndash;/* 증정품 상품은 선택 불가 */&ndash;&gt;
+						<div class="item_thumb">
+							<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+						</div>
+						<div class="item_name">
+							<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+						</div>
+						&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="true">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+						<div class="price">
+							<del><b>999,000</b>원</del>
+							<span class="strong"><b>12,000</b>원</span>
+						</div>
+						&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+						<div class="btns">
+							&lt;!&ndash;<button type="button" class="btn_sm_bordered emp">바로구매</button>&ndash;&gt;
+							&lt;!&ndash;<button type="button" class="btn_sm_bordered">삭제</button>&ndash;&gt;
+						</div>
+					</div>
+				</div>
+				<p class="text_notice">1개 담으면 1개 증정</p>
+			</div>-->
+			<!--/* 1+1 프로모션 옵션타입 */-->
+			<!--<div class="promotion">
+				<div class="clear promotion_header">
+					<a href="#none"><strong>1+1 이벤트명</strong></a>
+					<span class="benefit color_light_blue">1+1 혜택 부분적용</span>
+				</div>
+				<div class="item_wrap">
+					<div class="item_info">
+						&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+						<div class="item_thumb">
+							<div class="check_wrap">
+								<input type="checkbox" id="takeout4">
+								<label for="takeout4">
+									<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+									<span class="sr_only">상품명</span>
+								</label>
+							</div>
+						</div>
+						<div class="item_name">
+							<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+							<span class="flag">1+1</span>
+						</div>
+						&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+						<div class="price">
+							<del><b>999,000</b>원</del>
+							<span class="strong"><b>12,000</b>원</span>
+						</div>
+						&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+						<div class="btns">
+							<button type="button" class="btn_sm_bordered emp">바로구매</button>
+							<button type="button" class="btn_sm_bordered">삭제</button>
+						</div>
+					</div>
+					&lt;!&ndash;/* 옵션 : 수정, 삭제 가능 */&ndash;&gt;
+					<ul class="item_option">
+						<li>
+							<div class="option_name">
+								<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+								RD302 말린딸기시럽
+							</div>
+							<div class="count">
+
+							</div>
+							<div class="option_price">
+								<span>999,000원</span>
+								<button type="button" class="btn_sm_neutral">옵션변경</button>
+							</div>
+							<div class="delete">
+								<button type="button" class="btn_delete"><span class="sr_only">옵션 삭제</span></button>
+							</div>
+						</li>
+						<li>
+							<div class="option_name">
+								<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+								RD302 말린딸기시럽
+							</div>
+							<div class="count">
+
+							</div>
+							<div class="option_price">
+								<span>999,000원</span>
+								<button type="button" class="btn_sm_neutral">옵션변경</button>
+							</div>
+							<div class="delete">
+								<button type="button" class="btn_delete"><span class="sr_only">옵션 삭제</span></button>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<p class="text_notice">1개 담으면 1개 증정</p>
+			</div>-->
+			<!--/* 2+1 단품 프로모션 */-->
+			<!--<div class="promotion">
+				<div class="clear promotion_header">
+					<a href="#none"><strong>2+1 이벤트명</strong></a>
+					<span class="benefit"><em>2+1 혜택 적용</em></span>
+				</div>
+				<div class="item_wrap">
+					<div class="item_info">
+						&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+						<div class="item_thumb">
+							<div class="check_wrap">
+								<input type="checkbox" id="takeout3">
+								<label for="takeout3">
+									<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+									<span class="sr_only">상품명</span>
+								</label>
+							</div>
+						</div>
+						<div class="item_name">
+							<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+							<span class="flag">2+1</span>
+						</div>
+						&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+						<div class="price">
+							<del><b>999,000</b>원</del>
+							<span class="strong"><b>12,000</b>원</span>
+						</div>
+						&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+						<div class="btns">
+							<button type="button" class="btn_sm_bordered emp">바로구매</button>
+							<button type="button" class="btn_sm_bordered">삭제</button>
+						</div>
+					</div>
+				</div>
+				<p class="text_notice">2개 담으면 1개 증정</p>
+			</div>-->
+			<!--/* 2+1 복합 프로모션 2A+B */-->
+			<!--<div class="promotion">
+				<div class="clear promotion_header">
+					<a href="#none"><strong>2+1 이벤트명</strong></a>
+					&lt;!&ndash;/* 가격이 들어갈 경우 */&ndash;&gt;
+					<div class="price">
+						<del><b>999,000</b>원</del>
+						<span class="strong"><b>12,000</b>원</span>
+					</div>
+					<span class="benefit"><em>2+1 혜택 적용</em></span>
+				</div>
+				<div class="item_wrap">
+					<div class="item_info">
+						&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+						<div class="item_thumb">
+							<div class="check_wrap">
+								<input type="checkbox" id="takeout5">
+								<label for="takeout5">
+									<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+									<span class="sr_only">상품명</span>
+								</label>
+							</div>
+						</div>
+						<div class="item_name">
+							<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+							<span class="flag">2+1</span>
+						</div>
+						&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+						<div class="price">
+							<del><b>999,000</b>원</del>
+							<span class="strong"><b>12,000</b>원</span>
+						</div>
+						&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+						<div class="btns">
+							<button type="button" class="btn_sm_bordered emp">바로구매</button>
+							<button type="button" class="btn_sm_bordered">삭제</button>
+						</div>
+					</div>
+				</div>
+				<div class="item_wrap plus">
+					<div class="item_info">
+						&lt;!&ndash;/* 증정품 상품은 선택 불가 */&ndash;&gt;
+						<div class="item_thumb">
+							<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+						</div>
+						<div class="item_name">
+							<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+							<span class="flag">2+1</span>
+						</div>
+						&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="true">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+						<div class="price">
+							<del><b>999,000</b>원</del>
+							<span class="strong"><b>12,000</b>원</span>
+						</div>
+						&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+						<div class="btns">
+							&lt;!&ndash;<button type="button" class="btn_sm_bordered emp">바로구매</button>&ndash;&gt;
+							&lt;!&ndash;<button type="button" class="btn_sm_bordered">삭제</button>&ndash;&gt;
+						</div>
+					</div>
+				</div>
+				<p class="text_notice">2개 담으면 1개 증정</p>
+			</div>-->
+			<!--/* 2+1 복합 프로모션 A+B+C */-->
+			<!--<div class="promotion">
+				<div class="clear promotion_header">
+					<a href="#none"><strong>2+1 이벤트명</strong></a>
+					&lt;!&ndash;/* 가격이 들어갈 경우 */&ndash;&gt;
+					<div class="price">
+						<del><b>999,000</b>원</del>
+						<span class="strong"><b>12,000</b>원</span>
+					</div>
+					<span class="benefit"><em>2+1 혜택 적용</em></span>
+				</div>
+				<div class="item_wrap">
+					<div class="item_info">
+						&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+						<div class="item_thumb">
+							<div class="check_wrap">
+								<input type="checkbox" id="takeout6">
+								<label for="takeout6">
+									<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+									<span class="sr_only">상품명</span>
+								</label>
+							</div>
+						</div>
+						<div class="item_name">
+							<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+							<span class="flag">2+1</span>
+						</div>
+						&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+						<div class="price">
+							<del><b>999,000</b>원</del>
+							<span class="strong"><b>12,000</b>원</span>
+						</div>
+						&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+						<div class="btns">
+							<button type="button" class="btn_sm_bordered emp">바로구매</button>
+							<button type="button" class="btn_sm_bordered">삭제</button>
+						</div>
+					</div>
+				</div>
+				<div class="item_wrap">
+					<div class="item_info">
+						&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+						<div class="item_thumb">
+							<div class="check_wrap">
+								<input type="checkbox" id="takeout7">
+								<label for="takeout7">
+									<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+									<span class="sr_only">상품명</span>
+								</label>
+							</div>
+						</div>
+						<div class="item_name">
+							<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+							<span class="flag">2+1</span>
+						</div>
+						&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+						<div class="price">
+							<del><b>999,000</b>원</del>
+							<span class="strong"><b>12,000</b>원</span>
+						</div>
+						&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+						<div class="btns">
+							<button type="button" class="btn_sm_bordered emp">바로구매</button>
+							<button type="button" class="btn_sm_bordered">삭제</button>
+						</div>
+					</div>
+				</div>
+				<div class="item_wrap plus">
+					<div class="item_info">
+						&lt;!&ndash;/* 증정품 상품은 선택 불가 */&ndash;&gt;
+						<div class="item_thumb">
+							<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+						</div>
+						<div class="item_name">
+							<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+							<span class="flag">2+1</span>
+						</div>
+						&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="true">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+						<div class="price">
+							<del><b>999,000</b>원</del>
+							<span class="strong"><b>12,000</b>원</span>
+						</div>
+						&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+						<div class="btns">
+							<button type="button" class="btn_sm_bordered emp">바로구매</button>
+							<button type="button" class="btn_sm_bordered">삭제</button>
+						</div>
+					</div>
+				</div>
+				<p class="text_notice">2개 담으면 1개 증정</p>
+			</div>-->
+			<!--/* 2+1 프로모션 옵션타입 */-->
+			<!--<div class="promotion">
+				<div class="clear promotion_header">
+					<a href="#none"><strong>2+1 이벤트명</strong></a>
+					<span class="benefit"><em>2+1 혜택 적용</em></span>
+				</div>
+				<div class="item_wrap">
+					<div class="item_info">
+						&lt;!&ndash;/* 상품 선택 */&ndash;&gt;
+						<div class="item_thumb">
+							<div class="check_wrap">
+								<input type="checkbox" id="takeout9">
+								<label for="takeout9">
+									<img ap:src="@{/images/dummy/650000956_IM_01.png}" alt="">
+									<span class="sr_only">상품명</span>
+								</label>
+							</div>
+						</div>
+						<div class="item_name">
+							<a href="#none" class="title">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+							<span class="flag">2+1</span>
+						</div>
+						&lt;!&ndash;/* 상품 수량 */&ndash;&gt;
+						<div class="count">
+							<div class="ui_spinner" data-min="1" data-max="20" data-step="1" data-disabled="false">
+								<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" src="/pc/ko/images/common/ico_minus1.gif"></button>
+								<input class="spinner_input" type="text" title="선택품목갯수" id="" value="1" name="">
+								<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" src="/pc/ko/images/common/icon_plus1.gif"></button>
+							</div>
+						</div>
+						&lt;!&ndash;/* 포인트 및 가격 */&ndash;&gt;
+						<div class="price">
+							<span><b>12,000</b>P</span> /
+							<span class="strong"><b>12,000</b>P</span>
+						</div>
+						&lt;!&ndash;/* 구매/삭제 버튼 */&ndash;&gt;
+						<div class="btns">
+							<button type="button" class="btn_sm_bordered emp">바로구매</button>
+							<button type="button" class="btn_sm_bordered">삭제</button>
+						</div>
+					</div>
+					&lt;!&ndash;/* 옵션 : 수정, 삭제 가능 */&ndash;&gt;
+					<ul class="item_option">
+						<li>
+							<div class="option_name">RD302 말린딸기시럽</div>
+							<div class="count">
+
+							</div>
+							<div class="option_price">
+								<span>999,000원</span>
+								<button type="button" class="btn_sm_neutral">옵션변경</button>
+							</div>
+							<div class="delete">
+								<button type="button" class="btn_delete"><span class="sr_only">옵션 삭제</span></button>
+							</div>
+						</li>
+						<li>
+							<div class="option_name">RD302 말린딸기시럽</div>
+							<div class="count">
+
+							</div>
+							<div class="option_price">
+								<span>999,000원</span>
+								<button type="button" class="btn_sm_neutral">옵션변경</button>
+							</div>
+							<div class="delete">
+								<button type="button" class="btn_delete"><span class="sr_only">옵션 삭제</span></button>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<p class="text_notice">2개 담으면 1개 증정</p>
+			</div>-->
+		</div>
+	</dd>
+</dl>

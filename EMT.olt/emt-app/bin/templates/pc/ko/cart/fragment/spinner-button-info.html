@@ -1,0 +1,15 @@
+<div th:if="${cartProdEx.prodEx.saleDisplayStatus == 'Exhaustion' || cartProdEx.prodEx.saleDisplayStatus == 'OutOfStock'}" class="ui_spinner" data-disabled="true">
+	<button class="spinner_decrease" type="button" title="제품 수량 감소"><img alt="제품 수량 감소" ap:src="@{/images/common/ico_minus1.gif}"></button>
+	<input class="spinner_input" type="text" name="cartProdQty" th:value="${cartProdEx.cartProdQty}">
+	<button class="spinner_increase" type="button" title="제품 수량 증가"><img alt="제품 수량 증가" ap:src="@{/images/common/icon_plus1.gif}"></button>
+</div>
+<div th:if="${cartProdEx.prodEx.saleDisplayStatus == 'OnSale' && cartProdEx.prodEx.maxPurLimitYn == 'Y'}" data-min="1" data-max="100" class="ui_spinner" data-step="1" data-disabled="false">
+	<button class="spinner_decrease" type="button" title="제품 수량 감소" th:onclick="|prodQtyOperate(this,'${cartEx.cartSn}','${cartProdEx.cartProdSn}','${cartProdEx.prodEx.prodSn}','${cartProdEx.storePickupYn}','-')|"><img alt="제품 수량 감소" ap:src="@{/images/common/ico_minus1.gif}"></button>
+	<input class="spinner_input" type="text" name="cartProdQty" th:value="${cartProdEx.cartProdQty}">
+	<button class="spinner_increase" type="button" title="제품 수량 증가" th:onclick="|prodQtyOperate(this,'${cartEx.cartSn}','${cartProdEx.cartProdSn}','${cartProdEx.prodEx.prodSn}','${cartProdEx.storePickupYn}','+')|"><img alt="제품 수량 증가" ap:src="@{/images/common/icon_plus1.gif}"></button>
+</div>
+<div th:if="${cartProdEx.prodEx.saleDisplayStatus == 'OnSale' && cartProdEx.prodEx.maxPurLimitYn == 'N'}" data-min="1" class="ui_spinner" data-step="1" data-disabled="false">
+	<button class="spinner_decrease" type="button" title="제품 수량 감소" th:onclick="|prodQtyOperate(this,'${cartEx.cartSn}','${cartProdEx.cartProdSn}','${cartProdEx.prodEx.prodSn}','${cartProdEx.storePickupYn}','-')|"><img alt="제품 수량 감소" ap:src="@{/images/common/ico_minus1.gif}"></button>
+	<input class="spinner_input" type="text" name="cartProdQty" th:value="${cartProdEx.cartProdQty}">
+	<button class="spinner_increase" type="button" title="제품 수량 증가" th:onclick="|prodQtyOperate(this,'${cartEx.cartSn}','${cartProdEx.cartProdSn}','${cartProdEx.prodEx.prodSn}','${cartProdEx.storePickupYn}','+')|"><img alt="제품 수량 증가" ap:src="@{/images/common/icon_plus1.gif}"></button>
+</div>

@@ -1,0 +1,46 @@
+buildscript {
+    ext {
+       // buildEnv = System.properties['buildEnv']
+        springBootVersion = '1.5.9.RELEASE'
+       // apNexus = 'http://172.28.6.29:8081/nexus/content/groups/public/'
+    }
+    repositories {
+       mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$springBootVersion")
+        classpath ("com.eriwen:gradle-js-plugin:2.14.1")
+       
+}
+//uploadArchives {
+////    repositories.mavenDeployer {
+ //       repository(url: 'http://172.28.6.29:8081/nexus/content/repositories/releases/') {
+          //  authentication(userName: 'emtuser', password: 'emtuser')
+  //      }
+  //      snapshotRepository(url: 'http://172.28.6.29:8081/nexus/content/repositories/snapshots/') {
+          //  authentication(userName: 'emtuser', password: 'emtuser')
+     //   }
+   // }
+//}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+group = 'kr.ap'
+version = '1.0-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories{
+	mavenCentral()
+}
+
+dependencies{
+
+	 	compile("org.springframework.boot:spring-boot-autoconfigure:$springBootVersion")
+
+	    compileOnly("javax.servlet:javax.servlet-api:3.1.0")
+	    compileOnly("org.springframework.boot:spring-boot-starter-tomcat:$springBootVersion")
+	    compile("org.hamcrest:hamcrest-all:1.3");
+}
+

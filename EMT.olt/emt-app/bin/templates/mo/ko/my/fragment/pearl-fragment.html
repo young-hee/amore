@@ -1,0 +1,20 @@
+<th:block layout:fragment="pearl-list">
+	<!--/* Start : 목록내용이 있을경우 */-->
+	<div th:if="${activityPointInfo.totalCount != 0}" class="pbody my_point_status table_layout">
+		<dl>
+			<dt>적립 진주알</dt>
+			<dd th:text="'+' + ${#IntegUtil.toCommaNumber(activityPointInfo.savingPoint)}">+270</dd>
+		</dl>
+		<dl>
+			<dt>사용 진주알</dt>
+			<dd th:text="'-' + ${#IntegUtil.toCommaNumber(activityPointInfo.usePoint)}">-30</dd>
+		</dl>
+	</div>
+	
+	<div th:if="${activityPointInfo.totalCount != 0}" ap:replace="~{my/fragment/point-fragment :: beauty-point-body}"></div>
+	
+	<div th:unless="${activityPointInfo.totalCount != 0}" class="pbody panel notice">
+		<i class="ico"></i>
+		<p class="text">선택하신 기간에 해당하는 내역이 없습니다.</p>
+	</div>
+</th:block>

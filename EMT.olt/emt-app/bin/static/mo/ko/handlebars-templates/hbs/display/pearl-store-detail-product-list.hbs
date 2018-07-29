@@ -1,0 +1,129 @@
+{{!--
+	전시 : 구매버튼이 있는 상세 상품목록 (진주알스토어)
+--}}
+
+{{#xif this.prodListUnitCode '==' 'OnlineProd' }}
+	<!-- ==================================== 온라인상품일때 ==================================== -->
+
+	{{#each this.list}}
+
+		<li class="online_prod" data-online-prod-sn="{{ this.onlineProdSn }}">
+			<div class="item">
+				<div class="item_images">
+					<!-- /* 대표 이미지 */ -->
+					<img class="lazy_load" src="" data-src="{{ this.onlineProdImages.[0].imgUrl }}" alt=""></a>
+
+					{{#xif this.saleDisplayStatus '==' 'OutOfStock'}}
+						<div class="item_state out_of_stock">일시품절</div>
+					{{/xif}}
+				</div>
+
+				<div class="item_info list">
+					{{#if this.flags.length}}
+						<div class="flag_set">
+							{{#each this.flags}}
+								{{#xif this.prodFlagCode '==' 'icon_reco_new'}}
+									<span class="new">신상품</span>
+								{{/xif}}
+								{{#xif this.prodFlagCode '==' 'icon_reco_best'}}
+									<span class="best">베스트</span>
+								{{/xif}}
+								{{#xif this.prodFlagCode '==' 'icon_pr_prod'}}
+									<span class="event">이벤트</span>
+								{{/xif}}
+								{{#xif this.prodFlagCode '==' 'icon_reco_md'}}
+									<span>MD추천</span>
+								{{/xif}}
+								{{#xif this.prodFlagCode '==' 'icon_reco_online'}}
+									<span>온라인전용</span>
+								{{/xif}}
+							{{/each}}
+						</div>
+					{{/if}}
+					<div class="prd_name">
+						<div>
+							{{#if this.lineDesc}}
+								<p class="s_name"><em class="tag">{{ this.lineDesc }}</em></p>
+							{{/if}}
+							<p class="name">{{ this.onlineProdName }}</p>
+						</div>
+						<p class="color_name">{{ this.productCount }} colors</p>
+					</div>
+				</div>
+				<div class="price_area">
+					<div class="price">
+						<span>{{ numberFormat this.minActivityPoint }}<em> 알 {{#xif this.products.length '>' 1}}~{{/xif}}</em></span>
+					</div>
+				</div>
+			</div>
+			<button class="btn_order" type="button" data-online-prod-sn="{{ this.onlineProdSn }}">담기</button>
+		</li>
+
+	{{/each}}
+
+{{/xif}}
+
+{{#xif this.prodListUnitCode '==' 'Prod' }}
+	<!-- ==================================== 단위상품일때 ==================================== -->
+
+	{{#each this.list}}
+		{{#each this.products}}
+			{{#xif ../selectedProdSn '==' this.prodSn}}
+
+				<li class="prod" data-online-prod-sn="{{ ../onlineProdSn }}">
+					<div class="item">
+						<div class="item_images">
+							<!-- /* 대표 이미지 */ -->
+							<img class="lazy_load" src="" data-src="{{ this.prodImages.[0].imgUrl }}" alt="">
+
+							{{#xif this.saleDisplayStatus '==' 'OutOfStock'}}
+								<div class="item_state out_of_stock">일시품절</div>
+							{{/xif}}
+						</div>
+						{{!--/* flags */--}}
+						<div class="item_info list">
+							{{#if this.flags.length}}
+								<div class="flag_set">
+									{{#each this.flags}}
+										{{#xif this.prodFlagCode '==' 'icon_reco_new'}}
+											<span class="new">신상품</span>
+										{{/xif}}
+										{{#xif this.prodFlagCode '==' 'icon_reco_best'}}
+											<span class="best">베스트</span>
+										{{/xif}}
+										{{#xif this.prodFlagCode '==' 'icon_pr_prod'}}
+											<span class="event">이벤트</span>
+										{{/xif}}
+										{{#xif this.prodFlagCode '==' 'icon_reco_md'}}
+											<span>MD추천</span>
+										{{/xif}}
+										{{#xif this.prodFlagCode '==' 'icon_reco_online'}}
+											<span>온라인전용</span>
+										{{/xif}}
+									{{/each}}
+								</div>
+							{{/if}}
+							{{!-- /* 상품명 */ --}}
+							<div class="prd_name">
+								<div>
+									{{#if this.lineDesc}}
+										<p class="s_name"><em class="tag">{{ this.lineDesc }}</em></p>
+									{{/if}}
+									<p class="name">{{ this.prodName }}</p>
+								</div>
+								<p class="color_name">{{ this.productCount }} colors</p>
+							</div>
+						</div>
+						<div class="price_area">
+							<div class="price">
+								<span>{{ numberFormat this.exchActivityPoint }}<em> 알</em></span>
+							</div>
+						</div>
+					</div>
+					<button class="btn_order" type="button" data-online-prod-sn="{{ ../onlineProdSn }}" data-prod-sn="{{ ../prodSn }}">담기</button>
+				</li>
+			{{/xif}}
+		{{/each}}
+	{{/each}}
+
+{{/xif}}

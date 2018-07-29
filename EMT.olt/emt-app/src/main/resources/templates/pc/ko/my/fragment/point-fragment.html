@@ -1,0 +1,10 @@
+<th:block layout:fragment="beauty-point-list">
+
+    <div class="pbody ui_multiple_date_picker">
+		<div class="pbody point_status" style="margin-bottom: 32px;">
+			<span class="text">적립포인트</span><span class="num" th:text="${#IntegUtil.sumAmountPt(ptBrkd.ptTrBrkdInqVo, 3)} + ' P' "><em>20,000 P</em></span>
+			<class="text ">사용 포인트</span><span class="num " th:text="${#IntegUtil.sumAmountPt(ptBrkd.ptTrBrkdInqVo, 4)} + ' P'">8,000 P</span>
+		</div>
+	</div>
+    <div ap:replace="~{my/fragment/beauty-point-body :: beauty-point-body}"></div>
+</th:block>

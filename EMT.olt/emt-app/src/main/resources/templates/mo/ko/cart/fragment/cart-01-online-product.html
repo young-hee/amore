@@ -1,0 +1,70 @@
+<dl>
+	<dt class="on">
+		<span class="title">
+			<span class="check_wrap">
+				<input type="checkbox" id="onlinePrdCheck" name="onlinePrdCheck" checked="checked">
+				<label for="onlinePrdCheck">온라인 쇼핑 상품 (<strong id="onlinePrdCnt">0</strong>개)</label>
+			</span>
+		</span>
+		<button type="button"><span class="sr_only">더보기</span></button>
+	</dt>
+	<dd>
+		<div class="cont">
+			<div class="cart_item_box_wrap">
+				<th:block th:each="deliveryOnlineProdEx, deliveryOnlineProdExCnt : ${cartEx.cartDeliveryOnlineProdExList}">
+					<!--일반상품-->
+					<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'Prod' && deliveryOnlineProdEx.singleProdYn == 'Y'}">
+						<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-single-info :: prodType(prodTypecode = Prod)}"/>
+					</th:block>
+					<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'Prod' && deliveryOnlineProdEx.singleProdYn == 'N'}">
+						<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-group-info :: prodType(prodTypecode = Prod)}"/>
+					</th:block>
+
+					<!--예약상품-->
+					<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'Presale' && deliveryOnlineProdEx.singleProdYn == 'Y'}">
+						<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-single-info :: prodType(prodTypecode = Presale)}"/>
+					</th:block>
+					<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'Presale' && deliveryOnlineProdEx.singleProdYn == 'N'}">
+						<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-group-info :: prodType(prodTypecode = Presale)}"/>
+					</th:block>
+
+					<!--특가판매상품-->
+					<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'SpPriceSale' && deliveryOnlineProdEx.singleProdYn == 'Y'}">
+						<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-single-info :: prodType(prodTypecode = SpPriceSale)}"/>
+					</th:block>
+					<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'SpPriceSale' && deliveryOnlineProdEx.singleProdYn == 'N'}">
+						<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-group-info :: prodType(prodTypecode = SpPriceSale)}"/>
+					</th:block>
+
+					<!--특가증정상품-->
+					<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'SpPriceAward' && deliveryOnlineProdEx.singleProdYn == 'Y'}">
+						<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-single-info :: prodType(prodTypecode = SpPriceAward)}"/>
+					</th:block>
+					<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'SpPriceAward' && deliveryOnlineProdEx.singleProdYn == 'N'}">
+						<th:block ap:replace="~{cart/fragment/onlineProduct/online-01-prod-presale-spPrice-group-info :: prodType(prodTypecode = SpPriceAward)}"/>
+					</th:block>
+
+					<!--묶음고정상품-->
+					<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'BulkFixedProd'}">
+						<th:block ap:replace="~{cart/fragment/onlineProduct/online-02-bulk-info :: prodType(prodTypecode = BulkFixedProd)}"/>
+					</th:block>
+					<!--묶음선택상품-->
+					<th:block th:if="${deliveryOnlineProdEx.prodTypeCode == 'BulkSelectProd'}">
+						<th:block ap:replace="~{cart/fragment/onlineProduct/online-02-bulk-info :: prodType(prodTypecode = BulkSelectProd)}"/>
+					</th:block>
+
+				</th:block>
+
+				<!--맴버쉽포인트 상품-->
+				<th:block th:each="membershipPointOnlineProdEx, membershipPointOnlineProdExCnt : ${cartEx.cartDeliveryMembershipPointExchOnlineProdExList}">
+					<th:block ap:replace="~{cart/fragment/onlineProduct/online-03-membership-point-info}"/>
+				</th:block>
+
+				<!--활동포인트 상품-->
+				<th:block th:each="activityPointOnlineProdEx, activityPointOnlineProdExCnt : ${cartEx.cartDeliveryActivityPointExchOnlineProdExList}">
+					<th:block ap:replace="~{cart/fragment/onlineProduct/online-03-activity-point-info}"/>
+				</th:block>
+			</div>
+		</div>
+	</dd>
+</dl>

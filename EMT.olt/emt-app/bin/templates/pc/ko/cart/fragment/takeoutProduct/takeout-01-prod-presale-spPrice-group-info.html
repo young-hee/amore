@@ -1,0 +1,105 @@
+<th:block layout:fragment="prodType">
+	<!-- 그룹상품 : 일반상품, 예약상품, 특가판매상품 -->
+	<div class="item_wrap" id="prodList" th:if="${#lists.size(storePickupOnlineProdEx.cartProdExList) > 0}" th:with="cartProdExList=${storePickupOnlineProdEx.cartProdExList}">
+		<!--온라인상품-->
+		<div class="item_info">
+			<!--/* 상품 선택 */-->
+			<div class="item_thumb">
+				<div class="check_wrap">
+					<input type="checkbox" name="takeoutChkBox" th:id="'takeoutChkBox' + ${cartStorePickupOnlineProdExCnt.count}" th:value="${cartEx.cartSn} + ',' + ${storePickupOnlineProdEx.onlineProdSn}" th:checked="${storePickupOnlineProdEx.selectYn == 'Y'}">
+					<label th:for="'takeoutChkBox' + ${cartStorePickupOnlineProdExCnt.count}">
+						<img th:if="${storePickupOnlineProdEx.repOnlineProdImgEx != null}" th:src="${storePickupOnlineProdEx.repOnlineProdImgEx.imgUrl}" class="thm_cart_item">
+						<img th:if="${storePickupOnlineProdEx.repOnlineProdImgEx == null}" ap:src="@{/images/cart/no_img.png}" class="thm_cart_item">
+					</label>
+				</div>
+			</div>
+			<div class="item_name">
+				<a href="#none" class="title" th:text="${storePickupOnlineProdEx.onlineProdName}" th:onclick="|fnProdDetail('${storePickupOnlineProdEx.onlineProdSn}')|">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+				<span class="flag" th:if="${not #lists.isEmpty(storePickupOnlineProdEx.onlineProdFlagExList)}"
+					  th:each="onlineProdFlagEx : ${storePickupOnlineProdEx.onlineProdFlagExList}"
+					  th:text="${onlineProdFlagEx.prodFlagName}">예약상품
+				</span>
+			</div>
+			<div class="price">
+				<del>
+					<b th:if="${storePickupOnlineProdEx.productSaleAmountInfo != null
+								and storePickupOnlineProdEx.productSaleAmountInfo.standardCurrency.amount != storePickupOnlineProdEx.finalOnlineSalesAmountInfo.standardCurrency.amount}"
+					   th:text="${#IntegUtil.toCommaNumber(storePickupOnlineProdEx.productSaleAmountInfo.standardCurrency.amount)}+'원'">
+					</b>
+				</del>
+				<span class="strong">
+					<b th:if="${storePickupOnlineProdEx.finalOnlineSalesAmountInfo != null}"
+					   th:text="${#IntegUtil.toCommaNumber(storePickupOnlineProdEx.finalOnlineSalesAmountInfo.standardCurrency.amount)}+'원'">
+					</b>
+				</span>
+			</div>
+			<!--/* 구매/삭제 버튼 */-->
+			<div class="btns">
+				<button type="button" class="btn_sm_bordered" th:onclick="|removeCartOnlineProd(this,'${cartEx.cartSn}','${storePickupOnlineProdEx.onlineProdSn}','online')|">삭제</button>
+			</div>
+		</div>
+		<!--// 온라인상품-->
+
+		<!--/* 옵션 : 수정, 삭제 가능 */-->
+		<!--단위상품-->
+		<ul class="item_option" th:if="${#lists.size(cartProdExList) > 0}" th:each="cartProdEx, cartProdExCnt : ${cartProdExList}">
+			<li>
+				<!--위치변경 하지말것!-->
+				<input type="hidden" name="takeoutPrdSn" th:value="${cartProdEx.prodEx.prodSn}"/>
+				<input type="hidden" name="cartProdSn" th:value="${cartProdEx.cartProdSn}"/>
+				<input type="hidden" name="cartProdExList" th:value="${cartProdExList}"/>
+				<input type="hidden" th:name="'takeoutPrdInfo_' + ${storePickupOnlineProdEx.onlineProdSn}" th:value="${cartEx.cartSn} + ',' + ${cartProdEx.cartProdSn}"/>
+				<input type="hidden" th:name="'saleDisplayStatus_' + ${cartProdEx.prodEx.prodSn}" th:value="${cartProdEx.prodEx.saleDisplayStatus}"/>
+				<input type="hidden" th:name="'prodInvtExInfo_' + ${storePickupOnlineProdEx.onlineProdSn}" th:value="${cartProdEx.prodEx.prodSn} + ',' + ${cartProdEx.cartProdQty}"/>
+				<!--// 위치변경 하지말것!-->
+				<div class="option_name">
+					<img th:if="${cartProdEx.prodEx.repProdImgEx != null}" th:src="${cartProdEx.prodEx.repProdImgEx.imgUrl}" class="cart_option_name_thm">
+					<img th:if="${cartProdEx.prodEx.repProdImgEx == null}" ap:src="@{/images/cart/no_img.png}" class="cart_option_name_thm">
+					<th:block th:text="${cartProdEx.prodEx.prodName}">RD302 말린딸기시럽</th:block>
+				</div>
+				<div class="count">
+					<!--상품수량버튼 제어-->
+					<th:block ap:replace="~{cart/fragment/spinner-button-info}"/>
+					<!--// 상품수량버튼 제어-->
+				</div>
+				<div class="option_price" th:if="${cartProdEx.prodEx.saleDisplayStatus == 'OnSale'}">
+					<span th:if="${cartProdEx.calculationResultYn == 'Y' and cartProdEx.calculationResultProduct.finalOnlineSalesAmountInfo != null}"
+						  th:text="${#IntegUtil.toCommaNumber(cartProdEx.calculationResultProduct.finalOnlineSalesAmountInfo.standardCurrency.amount)}+'원'">
+					</span>
+					<span th:if="${cartProdEx.calculationResultYn == 'N' and cartProdEx.prodEx.salePrice != null}"
+						  th:text="${#IntegUtil.toCommaNumber(cartProdEx.prodEx.salePrice * cartProdEx.cartProdQty)}+'원'">
+					</span>
+					<button type="button" class="btn_sm_neutral" th:onclick="|fnUnitVariationProds('${cartEx.cartSn}','${cartProdEx.cartProdSn}','${cartProdEx.prodEx.prodSn}','${cartProdEx.cartProdQty}','${cartProdEx.storePickupYn}')|">옵션변경</button>
+				</div>
+				<div class="option_price" th:if="${cartProdEx.prodEx.saleDisplayStatus == 'OutOfStock' && prodTypeCode != 'Presale'}">
+					<em>[일시품절]</em><!--일반상품,특가판매상품,특가증정상품/구매불가안내-->
+					<button type="button" class="btn_sm_neutral" th:onclick="|fnUnitVariationProds('${cartEx.cartSn}','${cartProdEx.cartProdSn}','${cartProdEx.prodEx.prodSn}','${cartProdEx.cartProdQty}','${cartProdEx.storePickupYn}')|">옵션변경</button>
+				</div>
+				<div class="option_price" th:if="${cartProdEx.prodEx.saleDisplayStatus == 'Exhaustion' && prodTypeCode == 'Presale'}">
+					<em>[예약판매수량소진]</em>
+					<button type="button" class="btn_sm_neutral" th:onclick="|fnUnitVariationProds('${cartEx.cartSn}','${cartProdEx.cartProdSn}','${cartProdEx.prodEx.prodSn}','${cartProdEx.cartProdQty}','${cartProdEx.storePickupYn}')|">옵션변경</button>
+				</div>
+				<div class="delete">
+					<button type="button" class="btn_delete" th:onclick="|removeCartProd(this,'${cartEx.cartSn}','${cartProdEx.cartProdSn}')|"><span class="sr_only">옵션 삭제</span></button>
+				</div>
+			</li>
+		</ul>
+		<!--// 단위상품-->
+	</div>
+	<!--스크립트 정의-->
+	<!--<script th:inline="javascript">
+		var cartProdEx = $('.item_option').find('[name=cartProdExList]').val();
+		console.log("cartProdEx : " + cartProdEx);
+		//var cartProdEx = /*[[${cartProdExList}]]*/;
+		$(document).ready(function() {
+			startInit();
+		});
+		function startInit() {
+			var spinnerButtonlInfo = AP.common.getTemplate('cart.spinner-button-info', {
+				cartProdEx: cartProdEx
+			});
+			$('#spinnerView').empty();
+			$('#spinnerView').append(spinnerButtonlInfo);
+		}
+	</script>-->
+</th:block>

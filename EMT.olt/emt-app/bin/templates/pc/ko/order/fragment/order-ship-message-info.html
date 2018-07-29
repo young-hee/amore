@@ -1,0 +1,20 @@
+<dt><b>배송시 요청사항 선택</b></dt>
+<dd>
+	<div class="select_wrap w100p">
+		<select id="shipMsg" title="배송시 요청사항을 선택" tabindex="-1">
+			<option value="">배송시 요청사항을 선택해주세요.</option>
+			<option th:each="shipMsg : ${ordEx.shipMsgList}" th:value="${shipMsg}" th:text="${shipMsg}">직접 입력</option>
+			<!--<option value="부재 시 경비실에 맡겨주세요.">부재 시 경비실에 맡겨주세요.</option>
+			<option value="빠른 배송 부탁드립니다.">빠른 배송 부탁드립니다.</option>
+			<option value="부재 시 핸드폰으로 연락바랍니다.">부재 시 핸드폰으로 연락바랍니다.</option>
+			<option value="배송 전 연락 바랍니다.">배송 전 연락 바랍니다.</option>
+			<option value="직접 입력">직접 입력</option>-->
+		</select>
+	</div>
+	<div class="input_wrap w100p">
+		<input type="text" name="shipMsg" title="배송시 요청사항 직접 입력" maxlength="80" data-msg-required="배송 요청사항을 입력하세요.">
+	</div>
+	<!--<div class="input_wrap w100p" id="inputDirect" style="display: none">
+		<input type="text" name="shipMsg2" title="배송시 요청사항 직접 입력" placeholder="80자 이내로 작성해주세요." maxlength="80" data-msg-required="배송 요청사항을 입력하세요.">
+	</div>-->
+</dd>

@@ -1,0 +1,79 @@
+<th:block layout:fragment="prodType">
+	<!--/* 묶음단일상품 타입 */-->
+	<th:block th:if="${#lists.size(deliveryOnlineProdEx.cartProdExList) > 0}" th:each="cartProdEx : ${deliveryOnlineProdEx.cartProdExList}">
+		<div class="item_wrap" th:if="${#lists.size(cartProdEx.cartBulkIncludedProdExList) > 0}">
+			<!--위치변경 하지말것!-->
+			<input type="hidden" name="takeoutPrdSn" th:value="${cartProdEx.prodEx.prodSn}"/>
+			<input type="hidden" name="cartProdSn" th:value="${cartProdEx.cartProdSn}"/>
+			<input type="hidden" name="cartProdExList" th:value="${cartProdExList}"/>
+			<input type="hidden" th:name="'takeoutPrdInfo_' + ${deliveryOnlineProdEx.onlineProdSn}" th:value="${cartEx.cartSn} + ',' + ${cartProdEx.cartProdSn}"/>
+			<input type="hidden" th:name="'saleDisplayStatus_' + ${cartProdEx.prodEx.prodSn}" th:value="${cartProdEx.prodEx.saleDisplayStatus}"/>
+			<!--// 위치변경 하지말것!-->
+			<div class="item_info">
+				<!--/* 상품 선택 */-->
+				<div class="item_thumb">
+					<div class="check_wrap">
+						<input type="checkbox" name="takeoutChkBox" th:id="'takeoutChkBox' + ${deliveryOnlineProdExCnt.count}" th:value="${cartEx.cartSn} + ',' + ${cartProdEx.cartProdSn}" th:checked="${deliveryOnlineProdEx.selectYn == 'Y'}">
+						<label th:for="'takeoutChkBox' + ${deliveryOnlineProdExCnt.count}">
+							<img th:if="${deliveryOnlineProdEx.repOnlineProdImgEx != null}" th:src="${deliveryOnlineProdEx.repOnlineProdImgEx.imgUrl}" class="thm_cart_item">
+							<img th:if="${deliveryOnlineProdEx.repOnlineProdImgEx == null}" ap:src="@{/images/cart/no_img.png}" class="thm_cart_item">
+						</label>
+					</div>
+				</div>
+				<div class="item_name">
+					<a href="#none" class="title" th:text="${deliveryOnlineProdEx.onlineProdName}"  th:onclick="|fnProdDetail('${deliveryOnlineProdEx.onlineProdSn}')|">애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++ 애니 쿠편 올데이 퍼펙트 리필 SPF50+/PA+++</a>
+				</div>
+				<!--/* 상품 수량 */-->
+				<div class="count">
+					<!--상품수량버튼 제어-->
+					<th:block ap:replace="~{cart/fragment/spinner-button-info}"/>
+					<!--// 상품수량버튼 제어-->
+				</div>
+				<!--/* 포인트 및 가격 */-->
+				<div class="price" th:if="${cartProdEx.prodEx.saleDisplayStatus == 'OnSale'}">
+					<del>
+						<b th:if="${cartProdEx.calculationResultYn == 'Y'
+								and deliveryOnlineProdEx.productSaleAmountInfo != null
+								and deliveryOnlineProdEx.productSaleAmountInfo.standardCurrency.amount != deliveryOnlineProdEx.finalOnlineSalesAmountInfo.standardCurrency.amount}"
+						   th:text="${#IntegUtil.toCommaNumber(deliveryOnlineProdEx.productSaleAmountInfo.standardCurrency.amount)}+'원'">
+						</b>
+					</del>
+					<span class="strong">
+						<b th:if="${cartProdEx.calculationResultYn == 'Y' and deliveryOnlineProdEx.finalOnlineSalesAmountInfo != null}"
+						   th:text="${#IntegUtil.toCommaNumber(deliveryOnlineProdEx.finalOnlineSalesAmountInfo.standardCurrency.amount)}+'원'">
+						</b>
+						<b th:if="${cartProdEx.calculationResultYn == 'N' and cartProdEx.prodEx.salePrice != null}"
+						   th:text="${#IntegUtil.toCommaNumber(cartProdEx.prodEx.salePrice * cartProdEx.cartProdQty)}+'원'">
+						</b>
+					</span>
+				</div>
+				<div class="price" th:if="${cartProdEx.prodEx.saleDisplayStatus == 'OutOfStock' && cartProdEx.prodEx.prodTypeCode != 'Presale'}">
+					<em>[일시품절]</em><!--일반상품,특가판매상품,특가증정상품/구매불가안내-->
+				</div>
+				<div class="price" th:if="${cartProdEx.prodEx.saleDisplayStatus == 'Exhaustion' && cartProdEx.prodEx.prodTypeCode != 'Presale'}">
+					<em>[예약판매수량소진]</em><!--예약판매상품/구매불가안내-->
+				</div>
+				<!--/* 구매/삭제 버튼 */-->
+				<div class="btns">
+					<button type="button" class="btn_sm_bordered" th:onclick="|removeCartProd(this,'${cartEx.cartSn}','${cartProdEx.cartProdSn}')|">삭제</button>
+				</div>
+			</div>
+			<!--/* 옵션 : 수정, 삭제 불가능 */-->
+			<ul class="item_option">
+				<li th:each="bulkDcProdSelectProdEx : ${cartProdEx.cartBulkIncludedProdExList}">
+					<div class="option_name" th:text="${bulkDcProdSelectProdEx.includeProdEx.prodName}">RD302 말린딸기시럽</div>
+					<div class="count">
+						<p class="text_center" th:text="${bulkDcProdSelectProdEx.includedProdQty} + '개'">0개</p>
+					</div>
+					<div class="option_price">
+						<!--<em>[일시품절]</em>-->
+						<!--<button type="button" class="btn_sm_neutral">옵션변경</button>-->
+					</div>
+					<div class="delete">
+						<!--<button type="button" class="btn_delete"><span class="sr_only">옵션 삭제</span></button>-->
+					</div>
+				</li>
+			</ul>
+		</div>
+	</th:block>
+</th:block>
